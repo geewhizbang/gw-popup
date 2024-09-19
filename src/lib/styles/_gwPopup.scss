@@ -1,0 +1,164 @@
+.gw-popup {
+  position: fixed;
+  display: block;
+  overflow: visible;
+  width: 1px;
+  height: 1px;
+  left: 0;
+  top: 0;
+  padding: 0;
+  margin: 0;
+
+  .modalBackground {
+    background: black;
+    opacity: 0.03;
+  }
+
+  .relative {
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    position: relative;
+  }
+
+  .popupContainer {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    overflow: visible;
+
+    .popupElements {
+      width: 100%;
+      height: 100%;
+      top: -3000px;
+      left: -3000px;
+      background: transparent;
+      position: absolute;
+
+      > svg {
+        overflow: visible;
+        filter: drop-shadow(1px 1px 1px #0000004d);
+      }
+    }
+
+    .popupContent {
+      display: block;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      right: 0;
+      left: 0;
+      z-index: 100;
+      padding: 0;
+      margin: 0;
+      overflow: visible;
+    }
+  }
+}
+
+.gw-popup.centered {
+  overflow: hidden;
+  width: auto;
+  height: auto;
+  right: 0;
+  bottom: 0;
+
+  .popupContainer {
+    position: relative;
+    width: 100%;
+    height: 100%;
+
+    .modalBackground {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: gray;
+      opacity: 0.04;
+    }
+
+    .popupElements {
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+
+      .popupContent {
+        position: static;
+        overflow: visible;
+        padding: 20px;
+        border: none;
+        box-sizing: content-box;
+        border-radius: $sizeD;
+        box-shadow: 1px 1px 1px rgb(0 0 0 / 0.3);
+      }
+    }
+  }
+}
+
+.toolTip {
+  height: $sizeFontBase * 1.2;
+  box-sizing: border-box;
+  overflow: hidden;
+  display: inline-block;
+  background: $colorBgLight;
+  color: $colorText;
+  text-wrap: nowrap;
+  font-size: $sizeFontBase * 0.9;
+  line-height: 1.2 * $sizeFontBase;
+  padding: 0;
+  margin: 0;
+  width: auto;
+  user-select: none;
+}
+
+.help {
+  width: 600px;
+  height: auto;
+  overflow: hidden;
+  background: white;
+  padding: $sizeD $sizeD;
+  box-sizing: content-box;
+
+  > p {
+    margin-left: $sizeA;
+  }
+}
+
+button {
+  background: $colorButtonBg;
+  box-shadow: 1px 1px 1px rgb(0 0 0 / 0.3);
+  border: none;
+  border-radius: 7px;
+
+  &:hover:not(:disabled) {
+    background: $colorButtonBgHover;
+  }
+
+  &.cancel {
+    background: $colorButtonCancelBg;
+    color: white;
+  }
+}
+
+.gwp-smallModal {
+  background: rgb(201, 236, 236);
+  width: 270px;
+  height: auto;
+  overflow: hidden;
+}
+
+.gwp-mediumModal {
+  background: #ebf3fa;
+  width: 520px;
+  height: auto;
+  overflow: hidden;
+}
