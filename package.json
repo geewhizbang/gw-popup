@@ -1,7 +1,7 @@
 {
   "name": "gw-popup",
-  "private": true,
-  "version": "1.0.1",
+  "private": false,
+  "version": "1.0.2",
   "description": "A configurable popup component for Vue 3",
   "type": "module",
   "main": "dist/gw-popup.umd.js",

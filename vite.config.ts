@@ -8,7 +8,7 @@ import dts from 'vite-plugin-dts';
 export default defineConfig({
   build: {
     lib: {
-      entry: 'src/main.ts', // Adjust the entry point as needed
+      entry: 'src/gw-popup.ts', // Ensure this file exists
       name: 'GWPopup',
       fileName: format => `gw-popup.${format}.js`,
     },
@@ -21,6 +21,7 @@ export default defineConfig({
           pinia: 'Pinia',
           '@vueuse/core': 'VueUse',
         },
+        exports: 'named', // Use named exports to suppress the warning
       },
     },
   },
