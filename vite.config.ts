@@ -8,7 +8,7 @@ import dts from 'vite-plugin-dts';
 export default defineConfig({
   build: {
     lib: {
-      entry: 'src/gw-popup.ts', // Ensure this file exists
+      entry: 'src/index.ts', // Ensure this file exists
       name: 'GWPopup',
       fileName: format => `gw-popup.${format}.js`,
     },
@@ -25,7 +25,13 @@ export default defineConfig({
       },
     },
   },
-  plugins: [vue(), dts()],
+  plugins: [
+    vue(),
+    dts({
+      include: ['src/**/*.ts', 'src/**/*.vue'], // Include all necessary files
+      outDir: 'dist', // Ensure the output directory is set to 'dist'
+    }),
+  ],
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),

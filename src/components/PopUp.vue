@@ -53,42 +53,14 @@ import type {
   PopupPropsDefined,
   PopupRegistration,
   PopupShowParams,
-  PopupWidthHeight,
+  PopupData,
+  PopupPosition,
+  PopupShift,
+  PopupRects,
   SvgParams,
-} from '../pinia/PopupStore.ts';
+} from '../types/popupTypes.ts';
 
 import type { PopupModeKeys } from '../pinia/GWPopupConfig.ts';
-
-export interface PopupPosition {
-  top: number;
-  left: number;
-  width: number;
-  height: number;
-}
-
-export interface PopupShift {
-  left: number;
-  top: number;
-}
-
-export interface PopupData {
-  backgroundFill: string;
-  popupPosition: PopupPosition;
-  showRequested: boolean;
-  hideRequested: boolean;
-  isDisplayed: boolean;
-  isInit: boolean;
-  popupId: string;
-  retries: 0;
-  positioner: HTMLElement | null;
-  svgParams: SvgParams | null;
-}
-
-export interface PopupRects {
-  positioner: DOMRect;
-  content: DOMRect;
-  window: PopupWidthHeight;
-}
 
 export default defineComponent({
   name: 'PopUp',

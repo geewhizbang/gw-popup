@@ -1,19 +1,21 @@
 {
   "name": "gw-popup",
   "private": false,
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A configurable popup component for Vue 3",
   "type": "module",
   "main": "dist/gw-popup.umd.js",
   "module": "dist/gw-popup.es.js",
   "types": "dist/index.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "demo-dist"
   ],
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
-    "build:demo": "vue-tsc && vite build --config vite.demo.config.ts",
+    "build": "npm run build:lib && npm run build:demo",
+    "build:lib": "vite build --config vite.config.ts",
+    "build:demo": "vite build --config vite.demo.config.ts",
     "preview": "vite preview"
   },
   "repository": {

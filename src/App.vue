@@ -144,7 +144,9 @@
               <button ref="tipRefManual_e">Direction E</button>
               <PopUp
                 mode="tooltip"
-                :props="{ positioner: 'tipRefManual_e', direction: 'e' }"
+                :props="
+                  { positioner: 'tipRefManual_e', direction: 'e' } as PopupProps
+                "
                 id="toolTip_ec"
               >
                 <div class="toolTip">Tooltip Message: Button E</div>
@@ -425,14 +427,15 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import PopUp from './lib/components/PopUp.vue';
-import ToolTip from './lib/components/ToolTip.vue';
+import PopUp from './components/PopUp.vue';
+import ToolTip from './components/ToolTip.vue';
 import IconCheck from './icons/IconCheck.vue';
-import {
-  type PopupDirection,
-  type ToolTipRef,
-} from './lib/pinia/PopupStore.ts';
-import { usePopupStore } from './lib/pinia/PopupStore.ts';
+import { usePopupStore } from './pinia/PopupStore.ts';
+import type {
+  ToolTipRef,
+  PopupDirection,
+  PopupProps,
+} from './types/popupTypes.ts';
 
 export default defineComponent({
   name: 'PopupDemo',
@@ -440,7 +443,7 @@ export default defineComponent({
     PopUp,
     IconCheck,
     ToolTip,
-  },
+  } as const,
   setup() {
     const popupStore = usePopupStore();
     return {

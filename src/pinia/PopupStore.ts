@@ -1,204 +1,27 @@
 import { defineStore } from 'pinia';
-import { useEventListener, type Fn } from '@vueuse/core';
+import { useEventListener } from '@vueuse/core';
 import type { PopupModeKeys } from './GWPopupConfig.ts';
 import { getPopupConfig } from './GWPopupConfig.ts';
-
-export type PopupCallbackKeys = 'show' | 'hide' | 'refresh';
-
-export interface PopupShowParams {
-  positioner?: HTMLElement | string;
-  direction?: PopupDirection;
-}
-
-export type PopupCallbacks = {
-  [key in PopupCallbackKeys]: (params: PopupShowParams) => {};
-};
-
-export interface PopupCallbackDict {
-  [key: string]: PopupCallbacks;
-}
-
-export interface PopupWidthHeight {
-  height: number;
-  width: number;
-}
-
-export type PopupStatusKeys = 'isTooltip' | 'isOpen';
-export interface PopupStatus {
-  isTooltip: boolean;
-  isOpen: boolean;
-}
-
-export interface PopupStatusDict {
-  [key: string]: PopupStatus;
-}
-
-export type PopupcallbackHandlesKeys = 'show' | 'hide' | 'refresh';
-
-export interface PopupCallbackHandles {
-  [key: string]: {
-    show: Fn | any;
-    hide: Fn | any;
-    refresh: Fn | any;
-  };
-}
-
-export interface PopupServiceData {
-  popupIndex: number;
-  status: PopupStatusDict;
-  log: boolean;
-  callbacks: PopupCallbackDict;
-  callbackHandles: PopupCallbackHandles;
-  settings: PopupGlobalSettings | null;
-  toolTips: { [key: string]: ToolTipHandler };
-}
-
-export interface PopupRegistration {
-  isTooltip: boolean;
-  isModal: boolean;
-  isManual: boolean;
-  positioner: string;
-  eventObject: HTMLElement | null;
-  eventOn: keyof WindowEventMap;
-  eventOff: keyof WindowEventMap;
-}
-
-export type PopupDirection = 'n' | 'e' | 'w' | 's';
-export type PopupPosition = 'min' | 'center' | 'max';
-
-export type SvgDataKeys = 'M' | 'c' | 'l' | 'A' | 'z' | 'Q';
-export type SvgXYPair = string[];
-
-export interface SvgPathData {
-  s: SvgDataKeys;
-  v: (string | SvgXYPair)[];
-}
-
-export type SvgPathDataArray = SvgPathData[];
-
-export interface SvgData {
-  fill?: string;
-  svg: SvgPathDataArray;
-}
-
-export type SvgParams = {
-  width: string;
-  height: string;
-  viewbox: string;
-  paths: { class: string; path: string; fill?: string }[];
-};
-
-export interface PopupBoxParams {
-  arrowHeight: number;
-  arrowWidth: number;
-  arrowPosition: number;
-  height: number;
-  width: number;
-  cornerRadius: number;
-  mode: PopupModeKeys;
-  direction: PopupDirection;
-}
-
-export interface PopupProps {
-  arrowDistance?: number;
-  arrowHeight?: number;
-  arrowOffset?: number;
-  arrowPosition?: PopupPosition;
-  arrowWidth?: number;
-  class?: string;
-  cornerRadius?: number;
-  debugMode?: boolean;
-  direction?: PopupDirection;
-  eventOff?: keyof HTMLElementEventMap;
-  eventOn?: keyof HTMLElementEventMap;
-  isManual?: boolean;
-  isModal?: boolean;
-  isPositioned?: boolean;
-  isTooltip?: boolean;
-  logging?: boolean;
-  paddingX?: number;
-  paddingY?: number;
-  popupOffset?: number;
-  popupPosition?: PopupPosition;
-  positioner?: string;
-  shiftX?: number;
-  shiftY?: number;
-  zIndex?: number;
-}
-
-export interface PopupPropsDefined {
-  arrowDistance: number;
-  arrowHeight: number;
-  arrowOffset: number;
-  arrowPosition: PopupPosition;
-  arrowWidth: number;
-  class: string;
-  cornerRadius: number;
-  debugMode: boolean;
-  direction: PopupDirection;
-  eventOff: keyof HTMLElementEventMap;
-  eventOn: keyof HTMLElementEventMap;
-  isManual: boolean;
-  isModal: boolean;
-  isPositioned: boolean;
-  isTooltip: boolean;
-  logging: boolean;
-  paddingX: number;
-  paddingY: number;
-  popupOffset: number;
-  popupPosition: PopupPosition;
-  positioner: string;
-  shiftX: number;
-  shiftY: number;
-  zIndex: number;
-}
-
-export interface PopupDirectionMapItem {
-  yReverse: boolean;
-  switchXY: boolean;
-  svgElements: string[];
-  startOffset: 'H' | 'W' | '-H' | '-W' | '0';
-}
-
-export type PopupDirectionMap = {
-  [key in PopupDirection]: PopupDirectionMapItem;
-};
-
-export interface PopupGlobalSettings {
-  log: boolean;
-  debugMode: boolean;
-  modes: {
-    [key in PopupModeKeys]: {
-      props: PopupProps;
-      directionMap?: PopupDirectionMap;
-    };
-  };
-  svgElements: {
-    [key: string]: {
-      fill?: string;
-      pathTemplate: string;
-    };
-  };
-}
-
-export interface ToolTipRef {
-  refName: string;
-  ref: HTMLElement;
-  text: string;
-  direction?: PopupDirection;
-}
-
-export type ToolTipHandler = (refs: ToolTipRef[]) => void;
-
-export interface PopupServiceData {
-  popupIndex: number;
-  status: PopupStatusDict;
-  callbacks: PopupCallbackDict;
-  callbackHandles: PopupCallbackHandles;
-  settings: PopupGlobalSettings | null;
-  toolTips: { [key: string]: ToolTipHandler };
-  globalConfig: PopupGlobalSettings;
-}
+import type {
+  PopupCallbackDict,
+  PopupGlobalSettings,
+  PopupPropsDefined,
+  PopupServiceData,
+  ToolTipHandler,
+  ToolTipRef,
+  PopupRegistration,
+  PopupCallbacks,
+  PopupStatusDict,
+  PopupCallbackHandles,
+  PopupStatusKeys,
+  PopupWidthHeight,
+  PopupCallbackKeys,
+  PopupProps,
+  PopupDirection,
+  PopupDirectionMapItem,
+  PopupBoxParams,
+  SvgParams,
+} from '../types/popupTypes.ts';
 
 export const usePopupStore = defineStore('popup', {
   state: () =>
@@ -208,7 +31,7 @@ export const usePopupStore = defineStore('popup', {
       callbacks: {} as PopupCallbackDict,
       callbackHandles: {} as PopupCallbackHandles,
       settings: null as PopupGlobalSettings | null,
-      toolTips: {},
+      toolTips: {} as { [key: string]: ToolTipHandler },
       globalConfig: getPopupConfig(),
     }) as PopupServiceData,
   actions: {

@@ -5,17 +5,10 @@
 </template>
 
 <script lang="ts">
-export interface ToolTipData {
-  toolTipText: string;
-  ready: boolean;
-  tips: ToolTipRef[];
-  tipIndex: { [key: string]: number };
-}
-
 import { usePopupStore } from '../pinia/PopupStore.ts';
 import { useEventListener } from '@vueuse/core';
 import { defineComponent, ref } from 'vue';
-import type { ToolTipRef } from '../pinia/PopupStore.ts';
+import type { ToolTipData, ToolTipRef } from '../types/popupTypes.ts';
 import PopUp from './PopUp.vue';
 
 export default defineComponent({
