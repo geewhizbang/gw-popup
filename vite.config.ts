@@ -31,7 +31,6 @@ export default defineConfig({
           pinia: 'Pinia',
         },
         assetFileNames: assetInfo => {
-          console.log(assetInfo);
           if (assetInfo.name === 'style.css') return 'gw-popup.css';
           return assetInfo.name;
         },

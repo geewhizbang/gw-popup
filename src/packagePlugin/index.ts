@@ -1,6 +1,6 @@
 import PopUp from './components/PopUp.vue';
 import ToolTip from './components/ToolTip.vue';
-import { usePopupStore } from '../pinia/PopupStore';
+import { usePopupStore } from '../packagePlugin/pinia/PopupStore';
 import type {
   PopupProps,
   PopupShowParams,

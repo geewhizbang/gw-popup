@@ -1,5 +1,5 @@
 import { type Fn } from '@vueuse/core';
-import { type PopupModeKeys } from '../../pinia/GWPopupConfig';
+import { type PopupModeKeys } from '../pinia/GWPopupConfig';
 
 export type PopupCallbackKeys = 'show' | 'hide' | 'refresh';
 

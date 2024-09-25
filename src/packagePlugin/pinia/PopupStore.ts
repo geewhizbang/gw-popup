@@ -21,7 +21,7 @@ import type {
   PopupDirectionMapItem,
   PopupBoxParams,
   SvgParams,
-} from '../packagePlugin/types/popupTypes';
+} from '../types/popupTypes';
 
 export const usePopupStore = defineStore('popup', {
   state: () =>

@@ -5,7 +5,7 @@
 </template>
 
 <script lang="ts">
-import { usePopupStore } from '../../pinia/PopupStore';
+import { usePopupStore } from '../pinia/PopupStore';
 import { useEventListener } from '@vueuse/core';
 import { defineComponent, ref } from 'vue';
 import type { ToolTipData, ToolTipRef } from '../types/popupTypes';
