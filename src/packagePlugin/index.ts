@@ -8,15 +8,8 @@ import type {
   PopupDirection,
 } from './types/popupTypes';
 
-// Import the styles
-import './styles/_gwPopup.scss';
+// // Import the styles
+// import './styles/_gwPopup.scss';
 
 export { PopUp, ToolTip, usePopupStore };
 export type { PopupProps, PopupShowParams, ToolTipRef, PopupDirection };
-
-export default {
-  install: (app: any) => {
-    app.component('PopUp', PopUp);
-    app.component('ToolTip', ToolTip);
-  },
-};
