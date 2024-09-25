@@ -9,8 +9,14 @@ lerna-debug.log*
 
 node_modules
 dist
+live-demo
 dist-ssr
 *.local
+
+
+coverage
+docs/.vitepress/dist
+docs/.vitepress/cache
 
 # Editor directories and files
 .vscode/*

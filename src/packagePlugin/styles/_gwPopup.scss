@@ -1,3 +1,5 @@
+@import './_variables';
+
 .gw-popup {
   position: fixed;
   display: block;
@@ -130,22 +132,6 @@
 
   > p {
     margin-left: $sizeA;
-  }
-}
-
-button {
-  background: $colorButtonBg;
-  box-shadow: 1px 1px 1px rgb(0 0 0 / 0.3);
-  border: none;
-  border-radius: 7px;
-
-  &:hover:not(:disabled) {
-    background: $colorButtonBgHover;
-  }
-
-  &.cancel {
-    background: $colorButtonCancelBg;
-    color: white;
   }
 }
 

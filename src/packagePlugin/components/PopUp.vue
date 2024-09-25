@@ -44,7 +44,7 @@
 <script lang="ts">
 import { useEventListener } from '@vueuse/core';
 import { defineComponent, ref, type PropType, type StyleValue } from 'vue';
-import { usePopupStore } from '../pinia/PopupStore.ts';
+import { usePopupStore } from '../../pinia/PopupStore';
 
 import type {
   PopupCallbacks,
@@ -58,9 +58,9 @@ import type {
   PopupShift,
   PopupRects,
   SvgParams,
-} from '../types/popupTypes.ts';
+} from '../types/popupTypes';
 
-import type { PopupModeKeys } from '../pinia/GWPopupConfig.ts';
+import type { PopupModeKeys } from '../../pinia/GWPopupConfig';
 
 export default defineComponent({
   name: 'PopUp',
@@ -645,7 +645,3 @@ export default defineComponent({
   },
 });
 </script>
-
-<style lang="scss">
-@import '../styles/_gwPopup.scss';
-</style>

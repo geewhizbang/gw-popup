@@ -426,73 +426,220 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
-import PopUp from './components/PopUp.vue';
-import ToolTip from './components/ToolTip.vue';
+import { defineComponent, ref, onMounted, getCurrentInstance } from 'vue';
+import { usePopupStore } from './packagePlugin';
+import { PopupProps, ToolTipRef, PopupDirection } from './packagePlugin';
 import IconCheck from './icons/IconCheck.vue';
-import { usePopupStore } from './pinia/PopupStore.ts';
-import type {
-  ToolTipRef,
-  PopupDirection,
-  PopupProps,
-} from './types/popupTypes.ts';
 
 export default defineComponent({
   name: 'PopupDemo',
   components: {
-    PopUp,
     IconCheck,
-    ToolTip,
-  } as const,
+  },
   setup() {
     const popupStore = usePopupStore();
+    const instance = getCurrentInstance();
+
+    const openPopup = () => {
+      popupStore.showPopup('windowPopupExample');
+    };
+
+    const getRefKeys = (index: number) => {
+      const tooltipRefs: ToolTipRef[] = [];
+      if (instance && instance.proxy && instance.proxy.$refs) {
+        const refKeys = Object.keys(instance.proxy.$refs);
+        refKeys.forEach(refName => {
+          const refItem = instance.proxy?.$refs[refName];
+          if (
+            refItem &&
+            typeof refItem === 'object' &&
+            'getBoundingClientRect' in refItem
+          ) {
+            const direction = refName.split('_')[1];
+            tooltipRefs.push({
+              refName,
+              ref: refItem as HTMLElement,
+              direction: direction as PopupDirection,
+              text: `Tooltip Direction: ${direction}`,
+            });
+          }
+        });
+      }
+      popupStore.registerToolTips('ToolTip', tooltipRefs);
+    };
+
+    onMounted(() => {
+      getRefKeys(0);
+    });
+
     return {
+      openPopup,
+      getRefKeys,
       popupStore,
     };
-  },
-  methods: {
-    openPopup() {
-      this.popupStore.showPopup('windowPopupExample');
-    },
-    getRefKeys(index: number) {
-      const directions = ['n', 'e', 'w', 's'];
-      const tooltipRefs: ToolTipRef[] = [];
-      directions.forEach(direction => {
-        const refName = 'tipRef_' + direction;
-        const refItem = this.$refs[refName];
-        if (typeof refItem !== 'undefined') {
-          tooltipRefs.push({
-            refName: refName,
-            ref: refItem as HTMLElement,
-            text: 'Tooltip Direction: ' + direction,
-            direction: direction as PopupDirection,
-          });
-        }
-      });
-      if (tooltipRefs.length === directions.length) {
-        this.popupStore.registerToolTips('ToolTip', tooltipRefs);
-      } else {
-        index++;
-        if (index < 5) {
-          this.$nextTick(() => {
-            this.getRefKeys(index);
-          });
-        } else {
-          console.error('Tip refs were not found');
-        }
-      }
-    },
-  },
-  mounted() {
-    this.$nextTick(() => {
-      this.getRefKeys(0);
-    });
   },
 });
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap');
+
+$ratioValueScrollerButton: 2;
+
+$colorRed: #bf3333;
+
+$colorIconBgDefault: #e6e6e6;
+$colorIconBgActive: #7b9cfb;
+$colorIconBgHover: #c0e0c1;
+$colorHelpIconBg: #2a0fc0;
+$colorHelpIconBgHover: #3820c4;
+$colorBgMedium: #bad7e7;
+$colorBgLight: #cae8f8;
+$colorBgMedium: #4fb89f;
+$colorBgMediumDark: #2b846f;
+$colorFontMedium: #888888;
+$colorFooterBg: #073162;
+$colorFooterText: #fff;
+$colorRulerBg: white;
+$colorRulerTick: #dddddd;
+$colorRulerMajor: black;
+$colorDrawingBgA: #8fa7bf;
+$colorDrawingBgB: #f0f4f7;
+$colorDark: #1c2f66;
+$colorBgLight: #e0f4ec;
+$colorButtonBg: #c2e6e5;
+$colorButtonCancelBg: $colorRed;
+$colorSelectionBorder: #224f74;
+
+$colorArrow: #159c15;
+$colorGreen: #159c15;
+$colorButtonBgHover: #acd4d3;
+$colorButtonBgSelected: #35bdb8;
+$colorGray: #cccccc;
+$colorGrayDark: #555555;
+$colorGrayLightest: #f4f4fa;
+$colorGrayMedDark: #888888;
+$colorIndicatorSelected: #17edaa;
+$colorIndicatorBorderSelected: #aff1dd;
+$colorGrayLight: #e6e6e6;
+$colorGrayLighter: #f2f2f2;
+$colorBaseLight: #8eafdb;
+$colorButton: #82b6d8;
+$colorButtonLight: #e1eeef;
+$colorButtonLightHover: #fbfbfb;
+$colorBase: #5873d2;
+$colorGrayMedium: #a2a2a2;
+$colorGrayMediumLight: #b3b3b3;
+$colorBarBg: #d1f1ec;
+$colorHeaderBg: $colorBgLight;
+$colorScrollBarBg: #d3e3f3;
+$colorActiveTab: #93e9ea;
+$colorActiveTabHover: #bdf3f5;
+$colorSelectedTab: white;
+$colorTabBorderSelected: #189597;
+$colorTabBorderActive: #56babc;
+$colorText: $colorGrayDark;
+$colorDialogBar: #135c5d;
+$colorSvgSelect: #93e9ea;
+$colorIcon: #863da8;
+
+$sizeFontBase: 14px;
+$sizeButtonRadius: 6px;
+$sizeA: 2px;
+$sizeB: 3px;
+$sizeC: 5px;
+$sizeD: 7px;
+$sizeE: 10px;
+$sizeFontSmall: 0.7 * $sizeFontBase;
+$sizeFontMed: 0.88 * $sizeFontBase;
+$sizeHeaderHeight: 7.3 * $sizeFontBase;
+$sizeHeaderSeparation: $sizeFontBase;
+$sizeRulerBarWidth: $sizeFontBase * 2;
+$sizeFooterHeight: 4 * $sizeFontBase;
+$sizeModeBarWidth: 2.8 * $sizeFontBase;
+$sizeRulerFont: 0.75 * $sizeFontBase;
+$sizeScrollBarWidth: 1.5 * $sizeFontBase;
+$sizePadding: 2 * $sizeFontBase;
+$sizeIcon: 2 * $sizeFontBase;
+$sizeIconRadius: 0.2 * $sizeFontBase;
+$sizeToggleButtonLength: 6 * $sizeFontBase;
+$sizeToggleButtonHeight: 2 * $sizeFontBase;
+
+$sizePopupArrow: 0.4 * $sizeFontBase;
+
+$vwFontBase: 0.65vw;
+$vwPadSmall: 0.2 * $vwFontBase;
+$vwPadMedium: 0.8 * $vwFontBase;
+$vwValueScrollerWidth: 0.7 * $vwFontBase;
+$sizeValueScrollerWidth: $sizeFontBase * 0.7;
+
 $sizeSidePanelMax: 580px;
+
+body {
+  margin: 0;
+  padding: 0;
+  font-size: $sizeFontBase;
+  line-height: 1.2 * $sizeFontBase;
+  font-family: 'Open Sans', sans-serif;
+  overflow: hidden;
+}
+
+svg {
+  shape-rendering: geometricPrecision;
+  text-rendering: geometricPrecision;
+  image-rendering: optimizeQuality;
+  fill-rule: evenodd;
+  clip-rule: evenodd;
+}
+
+body * {
+  box-sizing: border-box;
+}
+
+div,
+ul,
+li {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+h1 {
+  font-size: 1.8 * $sizeFontBase;
+  line-height: 2 * $sizeFontBase;
+}
+
+h2 {
+  font-size: 1.5 * $sizeFontBase;
+  line-height: 1.7 * $sizeFontBase;
+  padding: 0;
+  margin: $sizeD 0 $sizeD 0;
+
+  &:first-child {
+    margin-top: 0;
+  }
+}
+
+h3 {
+  font-size: 1.2 * $sizeFontBase;
+  line-height: 1.4 * $sizeFontBase;
+  padding: 0;
+  margin: $sizeC 0 $sizeC 0;
+
+  &:first-child {
+    margin-top: 0;
+  }
+}
+
+.icon {
+  width: 1.7 * $sizeFontBase;
+  height: 1.7 * $sizeFontBase;
+  display: inline-block;
+  .fillRed {
+    fill: #8b1717;
+  }
+}
+
 header {
   display: flex;
   flex-direction: row;
@@ -763,4 +910,8 @@ pre {
     }
   }
 }
+</style>
+
+<style lang="css">
+@import '../dist/gw-popup.css';
 </style>

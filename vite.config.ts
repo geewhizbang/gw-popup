@@ -1,51 +1,59 @@
-import { fileURLToPath, URL } from 'node:url';
-
-import vue from '@vitejs/plugin-vue';
 import { defineConfig } from 'vite';
-import dts from 'vite-plugin-dts';
-
+import vue from '@vitejs/plugin-vue';
+import { resolve } from 'path';
 // https://vitejs.dev/config/
-export default defineConfig({
-  build: {
-    lib: {
-      entry: 'src/index.ts', // Ensure this file exists
-      name: 'GWPopup',
-      fileName: format => `gw-popup.${format}.js`,
+export default defineConfig(({ mode }) => {
+  const commonConfig = {
+    plugins: [vue()],
+    resolve: {
+      alias: {
+        '@': resolve(__dirname, 'src'),
+        '~': resolve(__dirname, 'src/packagePlugin'),
+      },
     },
-    rollupOptions: {
-      // Ensure to externalize dependencies that shouldn't be bundled
-      external: ['vue', 'pinia', '@vueuse/core'],
-      output: {
-        globals: {
-          vue: 'Vue',
-          pinia: 'Pinia',
-          '@vueuse/core': 'VueUse',
+    css: {
+      preprocessorOptions: {
+        scss: {
+          additionalData: `@import "@/packagePlugin/styles/_variables.scss";`,
         },
-        exports: 'named', // Use named exports to suppress the warning
       },
     },
-  },
-  plugins: [
-    vue(),
-    dts({
-      include: ['src/**/*.ts', 'src/**/*.vue'], // Include all necessary files
-      outDir: 'dist', // Ensure the output directory is set to 'dist'
-    }),
-  ],
-  resolve: {
-    alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url)),
-    },
-  },
-  css: {
-    preprocessorOptions: {
-      scss: {
-        additionalData: `
-         @use "sass:math";
-         @import "@/styles/_variables.scss";
-         @import "@/styles/_global.scss";
-        `,
+  };
+
+  if (mode === 'live-demo') {
+    return {
+      ...commonConfig,
+      build: {
+        outDir: './docs/.vitepress/dist/live-demo',
+        rollupOptions: {
+          input: {
+            main: resolve(__dirname, 'index.html'),
+          },
+        },
       },
-    },
-  },
+    };
+  } else {
+    return {
+      ...commonConfig,
+      build: {
+        lib: {
+          entry: resolve(__dirname, 'src/packagePlugin/index.ts'),
+          name: 'GWPopup',
+          fileName: 'gw-popup',
+        },
+        rollupOptions: {
+          external: ['vue'],
+          output: {
+            globals: {
+              vue: 'Vue',
+            },
+            assetFileNames: assetInfo => {
+              if (assetInfo.name === 'style.css') return 'gw-popup.css';
+              return assetInfo.name;
+            },
+          },
+        },
+      },
+    };
+  }
 });

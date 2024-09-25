@@ -1,6 +1,5 @@
 @use 'sass:math';
 @use 'sass:list';
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap');
 
 @function log($x) {
   @return math.div(math.log($x), math.log(10));
@@ -12,6 +11,10 @@
 
 $colorGrayMedium: #a2a2a2;
 $colorGrayDark: #555555;
+$colorBgLight: #e0f4ec;
+$colorText: $colorGrayDark;
+$colorButtonBg: #c2e6e5;
+$colorButtonBgHover: #acd4d3;
 
 $sizeFontBase: 14px;
 $sizeA: 2px;

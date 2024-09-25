@@ -1,46 +1,78 @@
 {
   "name": "gw-popup",
   "private": false,
-  "version": "1.0.3",
+  "version": "0.0.2",
   "description": "A configurable popup component for Vue 3",
   "type": "module",
-  "main": "dist/gw-popup.umd.js",
+  "main": "dist/gw-popup.umd.cjs",
   "module": "dist/gw-popup.es.js",
+  "style": "dist/gw-popup.css",
   "types": "dist/index.d.ts",
   "files": [
     "dist",
     "demo-dist"
   ],
+  "contributors": [
+    {
+      "name": "Geoffrey Swenson",
+      "email": "geewhizbang@gmail.com"
+    }
+  ],
+  "keywords": [
+    "Vue3",
+    "Popup",
+    "ToolTip"
+  ],
   "scripts": {
     "dev": "vite",
-    "build": "npm run build:lib && npm run build:demo",
-    "build:lib": "vite build --config vite.config.ts",
-    "build:demo": "vite build --config vite.demo.config.ts",
-    "preview": "vite preview"
+    "build": "npm run test && vite build --mode production && npm run generate:types && npm run build:pages",
+    "build:lib": "npm run test && vite build --mode production && npm run generate:types",
+    "clean": "rm -rf ./dist && rm -rf ./live-demo && rm -rf ./coverage",
+    "coverage:web": "http-server ./coverage",
+    "generate:types": "vue-tsc -p tsconfig-build.json --declaration --emitDeclarationOnly true --outdir ./dist",
+    "changeset": "changeset",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run  --coverage",
+    "build:pages": "npm run docs:build && npm run build:live-demo",
+    "build:live-demo": "vite build --mode live-demo --outDir ./docs/.vitepress/dist/live-demo",
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/geewhizbang/gw-popup.git"
   },
   "dependencies": {
-    "vue": "^3.0.0"
+    "@vitejs/plugin-vue": "^1.0.0",
+    "vue": "^3.3.8"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/gw-popup.es.js",
+      "require": "./dist/gw-popup.umd.cjs",
+      "types": "./dist/index.d.ts"
+    }
   },
   "peerDependencies": {
     "@vueuse/core": "^11.0.0",
-    "pinia": "^2.0.0",
-    "vue": "^3.0.0"
+    "pinia": "^2.0.0"
   },
-  "keywords": [
-    "vue",
-    "popup",
-    "component"
-  ],
-  "author": "Your Name",
+  "author": "Geoffrey Swenson",
   "license": "MIT",
   "devDependencies": {
-    "@vitejs/plugin-vue": "^1.0.0",
-    "typescript": "^4.0.0",
+    "@changesets/cli": "^2.26.2",
+    "@types/node": "^20.9.4",
+    "@vue/runtime-core": "^3.5.8",
+    "@vue/tsconfig": "^0.5.1",
+    "jsdom": "^25.0.1",
+    "sass": "^1.79.3",
+    "typescript": "^5.6.2",
     "vite": "^2.0.0",
-    "vite-plugin-dts": "^1.0.0"
+    "vite-plugin-dts": "^1.0.0",
+    "vitepress": "^1.3.4",
+    "vitest": "^0.34.6",
+    "vue-tsc": "^2.1.6"
   }
 }

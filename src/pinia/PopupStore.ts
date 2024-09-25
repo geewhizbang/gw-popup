@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { useEventListener } from '@vueuse/core';
-import type { PopupModeKeys } from './GWPopupConfig.ts';
-import { getPopupConfig } from './GWPopupConfig.ts';
+import type { PopupModeKeys } from './GWPopupConfig';
+import { getPopupConfig } from './GWPopupConfig';
 import type {
   PopupCallbackDict,
   PopupGlobalSettings,
@@ -21,7 +21,7 @@ import type {
   PopupDirectionMapItem,
   PopupBoxParams,
   SvgParams,
-} from '../types/popupTypes.ts';
+} from '../packagePlugin/types/popupTypes';
 
 export const usePopupStore = defineStore('popup', {
   state: () =>
@@ -33,7 +33,7 @@ export const usePopupStore = defineStore('popup', {
       settings: null as PopupGlobalSettings | null,
       toolTips: {} as { [key: string]: ToolTipHandler },
       globalConfig: getPopupConfig(),
-    }) as PopupServiceData,
+    } as PopupServiceData),
   actions: {
     mergeConfig(
       mode: PopupModeKeys,

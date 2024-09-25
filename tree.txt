@@ -1,0 +1,96 @@
+├── .eslintrc.mjs
+├── .gitignore
+├── .prettierrc.json
+├── dist
+│   ├── App.vue.d.ts
+│   ├── counter.d.ts
+│   ├── gw-popup.css
+│   ├── gw-popup.es.js
+│   ├── gw-popup.umd.js
+│   ├── icons
+│   │   └── IconCheck.vue.d.ts
+│   ├── main.d.ts
+│   ├── packagePlugin
+│   │   ├── components
+│   │   │   ├── index.d.ts
+│   │   │   ├── PopUp.vue.d.ts
+│   │   │   └── ToolTip.vue.d.ts
+│   │   ├── index.d.ts
+│   │   └── types
+│   │       └── popupTypes.d.ts
+│   ├── pinia
+│   │   ├── GWPopupConfig.d.ts
+│   │   └── PopupStore.d.ts
+│   └── setupTests.d.ts
+├── docs
+│   └── .vitepress
+│       └── dist
+│           ├── 404.html
+│           ├── assets
+│           │   ├── app.DT1xbDUl.js
+│           │   ├── chunks
+│           │   │   ├── framework.CVEyaVDF.js
+│           │   │   └── theme.DC1Sjp9h.js
+│           │   ├── inter-italic-cyrillic-ext.r48I6akx.woff2
+│           │   ├── inter-italic-cyrillic.By2_1cv3.woff2
+│           │   ├── inter-italic-greek-ext.1u6EdAuj.woff2
+│           │   ├── inter-italic-greek.DJ8dCoTZ.woff2
+│           │   ├── inter-italic-latin-ext.CN1xVJS-.woff2
+│           │   ├── inter-italic-latin.C2AdPX0b.woff2
+│           │   ├── inter-italic-vietnamese.BSbpV94h.woff2
+│           │   ├── inter-roman-cyrillic-ext.BBPuwvHQ.woff2
+│           │   ├── inter-roman-cyrillic.C5lxZ8CY.woff2
+│           │   ├── inter-roman-greek-ext.CqjqNYQ-.woff2
+│           │   ├── inter-roman-greek.BBVDIX6e.woff2
+│           │   ├── inter-roman-latin-ext.4ZJIpNVo.woff2
+│           │   ├── inter-roman-latin.Di8DUHzh.woff2
+│           │   ├── inter-roman-vietnamese.BjW4sHH5.woff2
+│           │   └── style.Bf0vIeZ0.css
+│           ├── hashmap.json
+│           └── live-demo
+│               ├── assets
+│               │   ├── gwPopupLogo.7d985d3a.svg
+│               │   ├── main.3416c4c6.css
+│               │   └── main.838af2ee.js
+│               └── index.html
+├── generate-tree.cjs
+├── index.html
+├── instructions.md
+├── license.md
+├── package-lock.json
+├── package.json
+├── README.md
+├── src
+│   ├── App.vue
+│   ├── assets
+│   │   ├── gwPopupLogo.svg
+│   │   └── vue.svg
+│   ├── components
+│   ├── counter.ts
+│   ├── icons
+│   │   └── IconCheck.vue
+│   ├── main.ts
+│   ├── packagePlugin
+│   │   ├── components
+│   │   │   ├── index.ts
+│   │   │   ├── PopUp.vue
+│   │   │   └── ToolTip.vue
+│   │   ├── index.ts
+│   │   ├── styles
+│   │   │   ├── _gwPopup.scss
+│   │   │   └── _variables.scss
+│   │   ├── types
+│   │   │   └── popupTypes.ts
+│   │   └── __tests__
+│   │       └── index.test.ts
+│   ├── pinia
+│   │   ├── GWPopupConfig.ts
+│   │   └── PopupStore.ts
+│   ├── setupTests.ts
+│   └── vite-env.d.ts
+├── tree.txt
+├── tsconfig-build.json
+├── tsconfig.json
+├── tsconfig.node.json
+├── vite.config.ts
+└── vite.demo.config.ts

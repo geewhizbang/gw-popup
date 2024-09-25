@@ -1,4 +1,4 @@
-import { type PopupGlobalSettings } from '../types/popupTypes';
+import { type PopupGlobalSettings } from '../packagePlugin/types/popupTypes';
 
 // variables:
 //    T: position of arrow from corner (x or y)

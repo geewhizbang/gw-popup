@@ -10,9 +10,9 @@ export default defineConfig({
     },
   },
   build: {
-    outDir: 'demo-dist',
-    rollupOptions: {
-      input: 'index.html', // Adjust the entry point as needed
+    outDir: 'demo-dist', // Output to a folder in the project root
+   rollupOptions: {
+      input: 'src/demo/index.html', // Adjust the entry point
     },
   },
   css: {
