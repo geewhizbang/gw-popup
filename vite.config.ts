@@ -1,59 +1,58 @@
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import { resolve } from 'path';
-// https://vitejs.dev/config/
-export default defineConfig(({ mode }) => {
-  const commonConfig = {
-    plugins: [vue()],
-    resolve: {
-      alias: {
-        '@': resolve(__dirname, 'src'),
-        '~': resolve(__dirname, 'src/packagePlugin'),
-      },
-    },
-    css: {
-      preprocessorOptions: {
-        scss: {
-          additionalData: `@import "@/packagePlugin/styles/_variables.scss";`,
-        },
-      },
-    },
-  };
+import dts from 'vite-plugin-dts';
 
-  if (mode === 'live-demo') {
-    return {
-      ...commonConfig,
-      build: {
-        outDir: './docs/.vitepress/dist/live-demo',
-        rollupOptions: {
-          input: {
-            main: resolve(__dirname, 'index.html'),
-          },
+export default defineConfig({
+  plugins: [
+    vue(),
+    dts({
+      include: ['src/packagePlugin'],
+      outputDir: 'dist',
+      staticImport: true,
+      skipDiagnostics: false,
+      rollupTypes: true,
+    }),
+  ],
+  build: {
+    outDir: 'dist',
+    lib: {
+      entry: resolve(__dirname, 'src/packagePlugin/index.ts'),
+      name: 'GWPopup',
+      fileName: format => `gw-popup.${format}.js`,
+    },
+    rollupOptions: {
+      external: ['vue', '@vueuse/core', 'pinia'],
+      output: {
+        exports: 'named',
+        globals: {
+          vue: 'Vue',
+          '@vueuse/core': 'VueUse',
+          pinia: 'Pinia',
+        },
+        assetFileNames: assetInfo => {
+          console.log(assetInfo);
+          if (assetInfo.name === 'style.css') return 'gw-popup.css';
+          return assetInfo.name;
         },
       },
-    };
-  } else {
-    return {
-      ...commonConfig,
-      build: {
-        lib: {
-          entry: resolve(__dirname, 'src/packagePlugin/index.ts'),
-          name: 'GWPopup',
-          fileName: 'gw-popup',
-        },
-        rollupOptions: {
-          external: ['vue'],
-          output: {
-            globals: {
-              vue: 'Vue',
-            },
-            assetFileNames: assetInfo => {
-              if (assetInfo.name === 'style.css') return 'gw-popup.css';
-              return assetInfo.name;
-            },
-          },
+    },
+    cssCodeSplit: false,
+  },
+  css: {
+    preprocessorOptions: {
+      scss: {
+        implementation: 'sass',
+        sassOptions: {
+          api: 'modern',
         },
       },
-    };
-  }
+    },
+  },
+  resolve: {
+    alias: {
+      '@': resolve(__dirname, 'src'),
+      '~': resolve(__dirname, 'src/packagePlugin'),
+    },
+  },
 });

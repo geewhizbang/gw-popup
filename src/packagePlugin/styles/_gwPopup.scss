@@ -1,4 +1,16 @@
-@import './_variables';
+$colorGrayMedium: #a2a2a2;
+$colorGrayDark: #555555;
+$colorBgLight: #e0f4ec;
+$colorText: $colorGrayDark;
+$colorButtonBg: #c2e6e5;
+$colorButtonBgHover: #acd4d3;
+
+$sizeFontBase: 14px;
+$sizeA: 2px;
+$sizeB: 3px;
+$sizeC: 5px;
+$sizeD: 7px;
+$sizeE: 10px;
 
 .gw-popup {
   position: fixed;
@@ -147,4 +159,14 @@
   width: 520px;
   height: auto;
   overflow: hidden;
+}
+
+.toolTipPrerender {
+  position: fixed;
+  top: -3000px;
+  left: -3000px;
+  display: block;
+  overflow: hidden;
+  height: auto;
+  width: 300px;
 }

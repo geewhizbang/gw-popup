@@ -13,11 +13,13 @@
     "skipLibCheck": true,
     "types": ["node", "vitest/globals"],
     "baseUrl": "./",
+    "outDir": "./dist",
     "paths": {
       "@/*": ["src/*"],
       "~/*": ["src/packagePlugin/*"]
     }
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts"],
+  "exclude": ["node_modules", "dist"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

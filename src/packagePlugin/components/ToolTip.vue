@@ -91,15 +91,3 @@ export default defineComponent({
   },
 });
 </script>
-
-<style lang="scss" scoped>
-.toolTipPrerender {
-  position: fixed;
-  top: -3000px;
-  left: -3000px;
-  display: block;
-  overflow: hidden;
-  height: auto;
-  width: 300px;
-}
-</style>

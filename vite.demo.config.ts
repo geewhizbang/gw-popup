@@ -11,19 +11,8 @@ export default defineConfig({
   },
   build: {
     outDir: 'demo-dist', // Output to a folder in the project root
-   rollupOptions: {
+    rollupOptions: {
       input: 'src/demo/index.html', // Adjust the entry point
-    },
-  },
-  css: {
-    preprocessorOptions: {
-      scss: {
-        additionalData: `
-         @use "sass:math";
-         @import "@/styles/_variables.scss";
-         @import "@/styles/_global.scss";
-        `,
-      },
     },
   },
 });

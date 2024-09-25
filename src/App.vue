@@ -911,7 +911,3 @@ pre {
   }
 }
 </style>
-
-<style lang="css">
-@import '../dist/gw-popup.css';
-</style>
