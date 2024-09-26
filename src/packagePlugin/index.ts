@@ -3,6 +3,7 @@ import ToolTip from './components/ToolTip.vue';
 import { usePopupManager } from './pinia/PopupManager';
 import { PopupPlugin } from './plugins/popupPlugin';
 import type { PopupManagerType } from './types/popupTypes';
+import './styles/_gwPopup.scss';
 
 import type {
   PopupProps,

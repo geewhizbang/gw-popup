@@ -48,15 +48,16 @@
               deal with. YOU have control over the CSS the way gawd intended
               with meaningful but simple CSS styles and HTML. If you prefer to
               bloat your app with Bootstrap markup, you can still use it.
+              Rendered size is 34k, gzipped 10k.
             </p>
           </div>
           <h3><IconCheck /><span>SVG Graphics</span></h3>
           <div>
             <p>
-              SVG is used to draw the graphics such as bubble outlines or icons.
-              You can create your own SVG templates for these graphics,
-              including multiple elements if you wish. Or not, of course you can
-              just design your own CSS and HTML.
+              SVG path templates are used to draw the graphics such as bubble
+              outlines or icons. You can create your own SVG templates for these
+              graphics, including multiple elements if you wish. Or not, of
+              course you can just design your own CSS and HTML.
             </p>
           </div>
           <h3><IconCheck /><span>GW-Popup uses Vue3 Teleport</span></h3>
