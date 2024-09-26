@@ -1,6 +1,9 @@
 import PopUp from './components/PopUp.vue';
 import ToolTip from './components/ToolTip.vue';
-import { usePopupStore } from '../packagePlugin/pinia/PopupStore';
+import { usePopupManager } from './pinia/PopupManager';
+import { PopupPlugin } from './plugins/popupPlugin';
+import type { PopupManagerType } from './types/popupTypes';
+
 import type {
   PopupProps,
   PopupShowParams,
@@ -8,8 +11,11 @@ import type {
   PopupDirection,
 } from './types/popupTypes';
 
-// // Import the styles
-// import './styles/_gwPopup.scss';
-
-export { PopUp, ToolTip, usePopupStore };
-export type { PopupProps, PopupShowParams, ToolTipRef, PopupDirection };
+export { PopUp, ToolTip, usePopupManager, PopupPlugin };
+export type {
+  PopupProps,
+  PopupShowParams,
+  ToolTipRef,
+  PopupDirection,
+  PopupManagerType,
+};

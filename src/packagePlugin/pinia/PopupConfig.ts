@@ -99,14 +99,14 @@ export const DefaultPopupConfig: PopupGlobalSettings = {
   },
 };
 
-let CurrentPopupConfig: PopupGlobalSettings = { ...DefaultPopupConfig };
+let PopupConfig: PopupGlobalSettings = { ...DefaultPopupConfig };
 
 export function setPopupConfig(config: Partial<PopupGlobalSettings>) {
-  CurrentPopupConfig = { ...DefaultPopupConfig, ...config };
+  PopupConfig = { ...DefaultPopupConfig, ...config };
 }
 
 export function getPopupConfig(): PopupGlobalSettings {
-  return CurrentPopupConfig;
+  return PopupConfig;
 }
 
-export default CurrentPopupConfig;
+export default PopupConfig;

@@ -20,7 +20,7 @@
 │   │       └── popupTypes.d.ts
 │   ├── pinia
 │   │   ├── GWPopupConfig.d.ts
-│   │   └── PopupStore.d.ts
+│   │   └── PopupManager.d.ts
 │   └── setupTests.d.ts
 ├── docs
 │   └── .vitepress
@@ -85,7 +85,7 @@
 │   │       └── index.test.ts
 │   ├── pinia
 │   │   ├── GWPopupConfig.ts
-│   │   └── PopupStore.ts
+│   │   └── PopupManager.ts
 │   ├── setupTests.ts
 │   └── vite-env.d.ts
 ├── tree.txt

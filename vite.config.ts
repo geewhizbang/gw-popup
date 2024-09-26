@@ -2,6 +2,7 @@ import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import { resolve } from 'path';
 import dts from 'vite-plugin-dts';
+import sass from 'sass';
 
 export default defineConfig({
   plugins: [
@@ -41,10 +42,8 @@ export default defineConfig({
   css: {
     preprocessorOptions: {
       scss: {
-        implementation: 'sass',
-        sassOptions: {
-          api: 'modern',
-        },
+        implementation: sass, // Explicitly specify Dart Sass
+        silenceDeprecations: ['legacy-js-api'],
       },
     },
   },
@@ -53,5 +52,8 @@ export default defineConfig({
       '@': resolve(__dirname, 'src'),
       '~': resolve(__dirname, 'src/packagePlugin'),
     },
+  },
+  server: {
+    port: 3000,
   },
 });

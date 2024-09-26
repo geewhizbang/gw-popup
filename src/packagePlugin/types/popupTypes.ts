@@ -1,5 +1,42 @@
 import { type Fn } from '@vueuse/core';
-import { type PopupModeKeys } from '../pinia/GWPopupConfig';
+import { type PopupModeKeys } from '../pinia/PopupConfig';
+
+import type { Store } from 'pinia';
+
+export interface PopupManagerType extends Store {
+  mergeConfig: (
+    mode: string,
+    baseConfig: PopupPropsDefined,
+    overrides: PopupProps,
+  ) => PopupPropsDefined;
+  setStatus: (popupId: string, key: string, value: boolean) => void;
+  closeOpenTooltips: (popupId: string) => void;
+  registerPopup: (
+    id: string | null,
+    config: PopupRegistration,
+    methods: PopupCallbacks,
+  ) => string;
+  destroyPopup: (popupId: string) => void;
+  showPopup: (
+    id: string,
+    positioner?: HTMLElement | string,
+    direction?: PopupDirection,
+  ) => void;
+  hidePopup: (id: string) => void;
+  refreshPopup: (id: string) => void;
+  connectToolTip(id: string, handler: ToolTipHandler): void;
+  disconnectToolTip(id: string): void;
+  percentHeightWidth(percent: number): PopupWidthHeight;
+  buildArrowBox(params: PopupBoxParams): SvgParams | null;
+  registerToolTips(id: string, refs: ToolTipRef[], index?: number): void;
+  config(settings: PopupGlobalSettings): void;
+  mergeTool(
+    baseConfig: PopupPropsDefined,
+    overrides: PopupProps,
+  ): PopupPropsDefined;
+  buildArrowBox(params: PopupBoxParams): SvgParams | null;
+  // Add other methods as needed
+}
 
 export type PopupCallbackKeys = 'show' | 'hide' | 'refresh';
 

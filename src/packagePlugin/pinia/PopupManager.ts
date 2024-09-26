@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { useEventListener } from '@vueuse/core';
-import type { PopupModeKeys } from './GWPopupConfig';
-import { getPopupConfig } from './GWPopupConfig';
+import type { PopupModeKeys } from './PopupConfig';
+import { getPopupConfig } from './PopupConfig';
 import type {
   PopupCallbackDict,
   PopupGlobalSettings,
@@ -23,7 +23,7 @@ import type {
   SvgParams,
 } from '../types/popupTypes';
 
-export const usePopupStore = defineStore('popup', {
+export const usePopupManager = defineStore('popupManager', {
   state: () =>
     ({
       popupIndex: 0,
@@ -52,7 +52,7 @@ export const usePopupStore = defineStore('popup', {
         }
       } catch (e) {
         console.error(
-          'Unexpected error in PopupStore mergeConfig for: ' + mode,
+          'Unexpected error in PopupManager mergeConfig for: ' + mode,
         );
       }
       return baseConfig;
@@ -396,7 +396,7 @@ export const usePopupStore = defineStore('popup', {
       if (!this.status[id]) {
         this.status[id] = { isOpen: false, isTooltip: true };
         this.logSimple(
-          'PopupStore.setStatus:' + id + ',' + state + ',' + status,
+          'PopupManager.setStatus:' + id + ',' + state + ',' + status,
         );
       }
       this.status[id][state] = status;

@@ -1,7 +1,7 @@
 <template>
   <header>
     <img src="./assets/gwPopupLogo.svg" alt="GW-Popup Logo" />
-    <h1>Configurable easy-to-use Vue3 Popup / Tooltip Control</h1>
+    <h1>Configurable easy-to-use Vue3 Popup / Tooltip Control (0.0.7 Beta)</h1>
   </header>
   <main>
     <div class="panels">
@@ -209,14 +209,14 @@
               &nbsp;&nbsp;&nbsp;&nbsp;ToolTip,<br>
               &nbsp;&nbsp;},<br>
               &nbsp;&nbsp;setup() {<br>
-              &nbsp;&nbsp;&nbsp;&nbsp;const popupStore = usePopupStore();<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;const PopupManager = usePopupManager();<br>
               &nbsp;&nbsp;&nbsp;&nbsp;return {<br>
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;popupStore,<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PopupManager,<br>
               &nbsp;&nbsp;&nbsp;&nbsp;};<br>
               &nbsp;&nbsp;},<br>
               &nbsp;&nbsp;methods: {<br>
               &nbsp;&nbsp;&nbsp;&nbsp;openPopup() {<br>
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.popupStore.showPopup('windowPopupExample');<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.PopupManager.showPopup('windowPopupExample');<br>
               &nbsp;&nbsp;&nbsp;&nbsp;},<br>
               &nbsp;&nbsp;&nbsp;&nbsp;getRefKeys(index: number) {<br>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const directions = ['n', 'e', 'w', 's'];<br>
@@ -234,7 +234,7 @@
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;});<br>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (tooltipRefs.length === directions.length) {<br>
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.popupStore.registerToolTips('ToolTip', tooltipRefs);<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.PopupManager.registerToolTips('ToolTip', tooltipRefs);<br>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;} else {<br>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;index++;<br>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (index &lt; 5) {<br>
@@ -259,7 +259,7 @@
             <h3>Centered Modal Popup</h3>
             <p>Click on the button to open a popup</p>
             <div class="example">
-              <button v-on:click="popupStore.showPopup('windowPopupExample')">
+              <button v-on:click="popupManager.showPopup('windowPopupExample')">
                 Click to see popup
               </button>
             </div>
@@ -289,7 +289,7 @@
             <!-- prettier-ignore -->
             <p class="codeBlock">
               &lt;<span class="tag">div</span> <span class="attr">class</span>=<span class="string">"example"</span>&gt;<br>
-              &nbsp;&nbsp;&lt;<span class="tag">button</span> <span class="attr">v-on:click</span>=<span class="string">"this.popupStore.showPopup('windowPopupExample');"</span>&gt;<br>
+              &nbsp;&nbsp;&lt;<span class="tag">button</span> <span class="attr">v-on:click</span>=<span class="string">"this.PopupManager.showPopup('windowPopupExample');"</span>&gt;<br>
               &nbsp;&nbsp;&nbsp;&nbsp;Click to see popup<br>
               &nbsp;&nbsp;&lt;/<span class="tag">button</span>&gt;<br>
               &lt;/<span class="tag">div</span>&gt;<br>
@@ -426,57 +426,65 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted, getCurrentInstance } from 'vue';
-import { usePopupStore } from './packagePlugin';
-import { PopupProps, ToolTipRef, PopupDirection } from './packagePlugin';
+import { defineComponent, inject } from 'vue';
+import {
+  PopupProps,
+  ToolTipRef,
+  PopupDirection,
+  PopupManagerType,
+} from './packagePlugin';
 import IconCheck from './icons/IconCheck.vue';
 
 export default defineComponent({
-  name: 'PopupDemo',
+  name: 'App',
   components: {
     IconCheck,
   },
   setup() {
-    const popupStore = usePopupStore();
-    const instance = getCurrentInstance();
-
-    const openPopup = () => {
-      popupStore.showPopup('windowPopupExample');
-    };
-
-    const getRefKeys = (index: number) => {
-      const tooltipRefs: ToolTipRef[] = [];
-      if (instance && instance.proxy && instance.proxy.$refs) {
-        const refKeys = Object.keys(instance.proxy.$refs);
-        refKeys.forEach(refName => {
-          const refItem = instance.proxy?.$refs[refName];
-          if (
-            refItem &&
-            typeof refItem === 'object' &&
-            'getBoundingClientRect' in refItem
-          ) {
-            const direction = refName.split('_')[1];
-            tooltipRefs.push({
-              refName,
-              ref: refItem as HTMLElement,
-              direction: direction as PopupDirection,
-              text: `Tooltip Direction: ${direction}`,
-            });
-          }
-        });
-      }
-      popupStore.registerToolTips('ToolTip', tooltipRefs);
-    };
-
-    onMounted(() => {
-      getRefKeys(0);
-    });
+    const popupManager = inject('popupManager') as PopupManagerType;
+    if (!popupManager) {
+      throw new Error('PopupManager not provided');
+    }
 
     return {
-      openPopup,
-      getRefKeys,
-      popupStore,
+      popupManager: popupManager,
     };
+  },
+  methods: {
+    openPopup() {
+      this.popupManager.showPopup('windowPopupExample');
+    },
+    getRefKeys(index: number) {
+      const directions = ['n', 'e', 'w', 's'];
+      const tooltipRefs: ToolTipRef[] = [];
+      directions.forEach(direction => {
+        const refName = 'tipRef_' + direction;
+        const refItem = this.$refs[refName];
+        if (typeof refItem !== 'undefined') {
+          tooltipRefs.push({
+            refName: refName,
+            ref: refItem as HTMLElement,
+            text: 'Tooltip Direction: ' + direction,
+            direction: direction as PopupDirection,
+          });
+        }
+      });
+      if (tooltipRefs.length === directions.length) {
+        this.popupManager.registerToolTips('ToolTip', tooltipRefs);
+      } else {
+        index++;
+        if (index < 5) {
+          this.$nextTick(() => {
+            this.getRefKeys(index);
+          });
+        } else {
+          console.error('Tip refs were not found');
+        }
+      }
+    },
+  },
+  mounted() {
+    this.getRefKeys(0);
   },
 });
 </script>

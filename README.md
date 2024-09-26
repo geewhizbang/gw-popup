@@ -53,14 +53,12 @@ Here's a basic example of how to use the Popup component in your Vue files:
 </template>
 
 <script>
-import { usePopupStore } from 'gw-popup';
-
 export default {
   setup() {
-    const popupStore = usePopupStore();
+    const PopupManager = usePopupManager();
 
     const showPopup = () => {
-      popupStore.showPopup('myPopup');
+      PopupManager.showPopup('myPopup');
     };
 
     return { showPopup };

@@ -1,0 +1,67 @@
+// ... other imports ...
+
+export default defineComponent({
+  name: 'PopUp',
+  props: {
+    // ... other props ...
+    popupManager: {
+      type: Object as PropType<typeof PopupManager>,
+      required: true
+    }
+  },
+  setup(props) {
+    // ... other setup code ...
+
+    // Use props.popupManager instead of PopupManager
+    const config = props.popupManager.mergeConfig(
+      props.mode,
+      propDefaults,
+      props.props,
+    );
+
+    return {
+      // ... other returns ...
+      config,
+      // Remove PopupManager from here
+    };
+  },
+  methods: {
+    // ... other methods ...
+
+    // Update all method calls to use this.popupManager instead of this.PopupManager
+    forceHide() {
+      // ...
+      this.popupManager.setStatus(this.data.popupId, 'isOpen', false);
+      // ...
+    },
+
+    show(params: PopupShowParams) {
+      // ...
+      this.popupManager.closeOpenTooltips(this.data.popupId);
+      // ...
+      rects = {
+        positioner: positionerRef.getBoundingClientRect(),
+        content: children[0].getBoundingClientRect(),
+        window: this.popupManager.percentHeightWidth(100),
+      };
+      // ...
+    },
+
+    // ... update other methods similarly ...
+
+    startUp(tries: number) {
+      // ...
+      this.data.popupId = this.popupManager.registerPopup(
+        this.id,
+        popupConfig,
+        methods,
+      );
+      this.popupManager.setStatus(this.data.popupId, 'isOpen', false);
+      // ...
+    },
+  },
+  beforeUnmount() {
+    this.popupManager.destroyPopup(this.data.popupId);
+    this.closeHandle();
+  },
+});

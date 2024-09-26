@@ -5,10 +5,13 @@
 </template>
 
 <script lang="ts">
-import { usePopupStore } from '../pinia/PopupStore';
 import { useEventListener } from '@vueuse/core';
-import { defineComponent, ref } from 'vue';
-import type { ToolTipData, ToolTipRef } from '../types/popupTypes';
+import { defineComponent, inject, ref } from 'vue';
+import type {
+  ToolTipData,
+  ToolTipRef,
+  PopupManagerType,
+} from '../types/popupTypes';
 import PopUp from './PopUp.vue';
 
 export default defineComponent({
@@ -26,12 +29,12 @@ export default defineComponent({
 
     const callbacks: (() => void)[] = [];
 
-    const popupStore = usePopupStore();
+    const popupManager = inject('popupManager') as PopupManagerType;
 
     return {
       data: ref(data),
       callbacks: ref(callbacks),
-      popupStore,
+      popupManager,
     };
   },
   methods: {
@@ -63,10 +66,10 @@ export default defineComponent({
     show(refKey: string) {
       const tip = this.data.tips[this.data.tipIndex[refKey]];
       this.data.toolTipText = tip.text;
-      this.popupStore.showPopup(this.id, tip.ref, tip.direction);
+      this.popupManager.showPopup(this.id, tip.ref, tip.direction);
     },
     hide() {
-      this.popupStore.hidePopup(this.id);
+      this.popupManager.hidePopup(this.id);
     },
   },
   props: {
@@ -80,10 +83,10 @@ export default defineComponent({
     },
   },
   mounted() {
-    this.popupStore.connectToolTip(this.id, this.registerTooltips);
+    this.popupManager.connectToolTip(this.id, this.registerTooltips);
   },
   beforeUnmount() {
-    this.popupStore.disconnectToolTip(this.id);
+    this.popupManager.disconnectToolTip(this.id);
     this.callbacks.forEach(callback => {
       callback();
     });

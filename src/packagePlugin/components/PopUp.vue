@@ -43,8 +43,13 @@
 
 <script lang="ts">
 import { useEventListener } from '@vueuse/core';
-import { defineComponent, ref, type PropType, type StyleValue } from 'vue';
-import { usePopupStore } from '../pinia/PopupStore';
+import {
+  defineComponent,
+  ref,
+  type PropType,
+  inject,
+  type StyleValue,
+} from 'vue';
 
 import type {
   PopupCallbacks,
@@ -58,14 +63,20 @@ import type {
   PopupShift,
   PopupRects,
   SvgParams,
+  PopupManagerType,
 } from '../types/popupTypes';
 
-import type { PopupModeKeys } from '../pinia/GWPopupConfig';
+import type { PopupModeKeys } from '../pinia/PopupConfig';
 
 export default defineComponent({
   name: 'PopUp',
   setup(props) {
     const svgParams: SvgParams | null = null;
+
+    const popupManager = inject('popupManager') as PopupManagerType;
+    if (!popupManager) {
+      throw new Error('PopupManager not provided');
+    }
 
     const popupPosition: PopupPosition = {
       top: 0,
@@ -129,8 +140,8 @@ export default defineComponent({
     } as PopupPropsDefined;
 
     data.popupId = props.id;
-    const popupStore = usePopupStore();
-    const config = popupStore.mergeConfig(
+
+    const config = popupManager.mergeConfig(
       props.mode,
       propDefaults,
       props.props,
@@ -145,7 +156,7 @@ export default defineComponent({
       }),
       config: config,
       closeHandle: () => {},
-      popupStore,
+      popupManager: popupManager,
     };
   },
   props: {
@@ -185,7 +196,7 @@ export default defineComponent({
       this.data.showRequested = false;
       this.data.isDisplayed = false;
 
-      this.popupStore.setStatus(this.data.popupId, 'isOpen', false);
+      this.popupManager.setStatus(this.data.popupId, 'isOpen', false);
       this.closeHandle();
     },
 
@@ -241,7 +252,7 @@ export default defineComponent({
         }, 200);
         this.data.isDisplayed = true;
 
-        this.popupStore.closeOpenTooltips(this.data.popupId);
+        this.popupManager.closeOpenTooltips(this.data.popupId);
 
         let rects: PopupRects;
 
@@ -259,7 +270,7 @@ export default defineComponent({
           rects = {
             positioner: positionerRef.getBoundingClientRect(),
             content: children[0].getBoundingClientRect(),
-            window: this.popupStore.percentHeightWidth(100),
+            window: this.popupManager.percentHeightWidth(100),
           };
         } catch (e) {
           this.log(
@@ -387,7 +398,7 @@ export default defineComponent({
             shiftPosition.top =
               shiftPosition.top -
               (rects.window.height - (style.top + style.height)) +
-              this.popupStore.percentHeightWidth(10)['height'];
+              this.popupManager.percentHeightWidth(10)['height'];
             offPage = true;
           }
           const isCentered = direction === 'e' || direction === 'w';
@@ -396,7 +407,7 @@ export default defineComponent({
             rects.positioner.top -
               (isCentered
                 ? rects.positioner.height / 2
-                : this.popupStore.percentHeightWidth(10)['height'])
+                : this.popupManager.percentHeightWidth(10)['height'])
           ) {
             shiftPosition = {
               top: this.shifts.original.top,
@@ -443,7 +454,7 @@ export default defineComponent({
             break;
         }
 
-        this.data.svgParams = this.popupStore.buildArrowBox({
+        this.data.svgParams = this.popupManager.buildArrowBox({
           mode: this.mode,
           arrowHeight: this.config.arrowHeight,
           arrowWidth: this.config.arrowWidth,
@@ -561,7 +572,7 @@ export default defineComponent({
           };
           this.styles.element = styleValue;
           this.data.isDisplayed = false;
-          this.popupStore.setStatus(this.data.popupId, 'isOpen', false);
+          this.popupManager.setStatus(this.data.popupId, 'isOpen', false);
           this.closeHandle();
         } else {
           clearTimeout(delay);
@@ -624,12 +635,12 @@ export default defineComponent({
       };
 
       //if id is provided, it uses the popup id, or the service creates one. Ids have to be unique or events overwrite each other.
-      this.data.popupId = this.popupStore.registerPopup(
+      this.data.popupId = this.popupManager.registerPopup(
         this.id,
         popupConfig,
         methods,
       );
-      this.popupStore.setStatus(this.data.popupId, 'isOpen', false);
+      this.popupManager.setStatus(this.data.popupId, 'isOpen', false);
 
       if (this.autoOpen) {
         this.show({ positioner: this.config.positioner });
@@ -640,7 +651,7 @@ export default defineComponent({
     this.$nextTick(() => this.startUp(1));
   },
   beforeUnmount() {
-    this.popupStore.destroyPopup(this.data.popupId);
+    this.popupManager.destroyPopup(this.data.popupId);
     this.closeHandle();
   },
 });
