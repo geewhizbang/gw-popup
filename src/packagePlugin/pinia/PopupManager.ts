@@ -380,6 +380,7 @@ export const usePopupManager = defineStore('popupManager', {
     hidePopup(id: string) {
       if (this.callbacks[id]) {
         this.callbacks[id].hide({});
+        this.status[id].isOpen = false;
       } else {
         this.logSimple('hidePopup: Popup ' + id + ' was not found');
       }

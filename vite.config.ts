@@ -4,6 +4,7 @@ import { resolve } from 'path';
 import dts from 'vite-plugin-dts';
 import sass from 'sass'; // Import Dart Sass
 import { visualizer } from 'rollup-plugin-visualizer'; // Import the visualizer plugin
+import fs from 'fs-extra'; 
 
 export default defineConfig(({ mode }) => {
   const plugins = [
@@ -15,6 +16,25 @@ export default defineConfig(({ mode }) => {
       skipDiagnostics: false,
       rollupTypes: true,
     }),
+    {
+      name: 'copy-scss',
+      writeBundle() {
+        fs.copySync(
+          resolve(__dirname, 'src/packagePlugin/styles/_gwPopup.scss'),
+          resolve(__dirname, 'dist/gw-popup.scss'),
+        );
+      },
+    },
+    // New plugin to copy popupConfig.ts
+    {
+      name: 'copy-popup-config',
+      writeBundle() {
+        fs.copySync(
+          resolve(__dirname, 'src/packagePlugin/pinia/PopupConfig.ts'),
+          resolve(__dirname, 'dist/PopupConfig.ts'),
+        );
+      },
+    },
   ];
 
   if (process.env.ANALYZE === 'true') {
@@ -56,6 +76,7 @@ export default defineConfig(({ mode }) => {
     css: {
       preprocessorOptions: {
         scss: {
+          silenceDeprecations: ['legacy-js-api'],
           implementation: sass, // Explicitly specify Dart Sass
         },
       },

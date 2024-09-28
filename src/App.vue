@@ -103,32 +103,31 @@
           <h2>Installation and Setup</h2>
           <div class="box">
             <h3>Install the package</h3>
-            <p>Install GW-Popup along with its peer dependencies:</p>
-            <p class="code">npm install gw-popup pinia @vueuse/core</p>
-            <p>If you already have Pinia and VueUse installed:</p>
+            <p>Install GW-Popup</p>
             <p class="code">npm install gw-popup</p>
+            <h3>Load the stylesheet</h3>
+            <p>Load the stylesheet in your main.ts or main.js file:</p>
+            <p class="code">import 'gw-popup/dist/gw-popup.css';</p>
+            <p>Or in index.html:</p>
+            <p class="code">
+              &lt;link rel="stylesheet" href="gw-popup.css" /&gt;
+            </p>
+            <h3>Set up Pinia, PopupPlugin, and PopUp, ToolTip components</h3>
 
-            <h3>Set up Pinia</h3>
             <p>In your main.ts or main.js file:</p>
             <p class="code">
               import { createApp } from 'vue';<br />
               import { createPinia } from 'pinia';<br />
-              import App from './App.vue';<br />
-              import { GWPopup } from 'gw-popup';<br />
-              <br />
+              import { PopUp, ToolTip, PopupPlugin } from 'gw-popup';<br />
               const app = createApp(App);<br />
+              app.component('PopUp', PopUp);<br />
+              app.component('ToolTip', ToolTip);<br />
               const pinia = createPinia();<br />
               <br />
               app.use(pinia);<br />
-              app.use(GWPopup);<br />
+              app.use(PopupPlugin);<br />
               <br />
               app.mount('#app');
-            </p>
-
-            <h3>VueUse Setup</h3>
-            <p>
-              VueUse is used internally and doesn't require additional setup
-              beyond installation.
             </p>
           </div>
         </div>
@@ -145,8 +144,7 @@
               <button ref="tipRefManual_e">Direction E</button>
               <PopUp
                 mode="tooltip"
-                :props="
-                  { positioner: 'tipRefManual_e', direction: 'e' } as PopupProps
+                :props="{ positioner: 'tipRefManual_e', direction: 'e' } as PopupProps
                 "
                 id="toolTip_ec"
               >
@@ -157,7 +155,7 @@
             <!-- prettier-ignore -->
             <p class="codeBlock">
               &lt;<span class="tag">button</span> <span class="attr">ref</span>=<span class="string">"tipRef_e"</span>&gt;Direction E&lt;/<span class="tag">button</span>&gt;<br>
-              &lt;<span class="tag">PopUp</span> <span class="attr">mode</span>=<span class="string">"tooltip"</span> <span class="attr">:props</span>=<span class="string">"{positioner: 'tipRef_e', direction:'e'}"</span>&gt;<br>
+              &lt;<span class="tag">PopUp</span> <span class="attr">mode</span>=<span class="string">"tooltip"</span><span class="attr">:props</span>=<span class="string">"{positioner: 'tipRef_e', direction:'e'}"</span>&gt;<br>
               &nbsp;&nbsp;&lt;<span class="tag">div</span> <span class="attr">class</span>=<span class="string">"toolTip"</span>&gt;Tooltip Message: e&lt;/<span class="tag">div</span>&gt;<br>
               &lt;/<span class="tag">PopUp</span>&gt;
             </p>
@@ -184,20 +182,25 @@
             <p>Button Template</p>
             <!-- prettier-ignore -->
             <p class="codeBlock">
-              &lt;<span class="tag">div</span>&nbsp;class="example"><br/>
-              &nbsp;&nbsp; &lt;<span class="tag">div</span>&nbsp;class="separatedButtons"><br/>
-              &nbsp;&nbsp;&nbsp;&nbsp; &lt;<span class="tag">button</span>&nbsp;ref="tipRef_n">Direction&nbsp;n&lt;/button&gt;<br/>
-              &nbsp;&nbsp;&nbsp;&nbsp; &lt;<span class="tag">button</span>&nbsp;ref="tipRef_e">Direction&nbsp;e&lt;/button&gt;<br/>
-              &nbsp;&nbsp;&nbsp;&nbsp; &lt;<span class="tag">button</span>&nbsp;ref="tipRef_w">Direction&nbsp;w&lt;/button&gt;<br/>
-              &nbsp;&nbsp;&nbsp;&nbsp; &lt;<span class="tag">button</span>&nbsp;ref="tipRef_s">Direction&nbsp;s&lt;/button&gt;<br/>
-              &nbsp;&nbsp;&lt;/<span class="tag">div</span>&gt;<br/>
+              &lt;<span class="tag">div</span>&nbsp;class="example"><br />
+              &nbsp;&nbsp; &lt;<span class="tag">div</span>&nbsp;class="separatedButtons"><br />
+              &nbsp;&nbsp;&nbsp;&nbsp; &lt;<span
+                class="tag">button</span>&nbsp;ref="tipRef_n">Direction&nbsp;n&lt;/button&gt;<br />
+              &nbsp;&nbsp;&nbsp;&nbsp; &lt;<span
+                class="tag">button</span>&nbsp;ref="tipRef_e">Direction&nbsp;e&lt;/button&gt;<br />
+              &nbsp;&nbsp;&nbsp;&nbsp; &lt;<span
+                class="tag">button</span>&nbsp;ref="tipRef_w">Direction&nbsp;w&lt;/button&gt;<br />
+              &nbsp;&nbsp;&nbsp;&nbsp; &lt;<span
+                class="tag">button</span>&nbsp;ref="tipRef_s">Direction&nbsp;s&lt;/button&gt;<br />
+              &nbsp;&nbsp;&lt;/<span class="tag">div</span>&gt;<br />
               &lt;/<span class="tag">div</span>&gt;
             </p>
 
             <p>ToolTip Template (anywhere on the page or a parent component)</p>
             <!-- prettier-ignore -->
             <p class="codeBlock">
-              &lt;<span class="tag">ToolTip</span><span class="attr"> mode</span>="tooltip"<span class="attr"> id</span>="ToolTip"&gt;&lt;/<span class="tag">ToolTip</span>&gt;
+              &lt;<span class="tag">ToolTip</span><span class="attr"> mode</span>="tooltip"<span class="attr">
+                id</span>="ToolTip"&gt;&lt;/<span class="tag">ToolTip</span>&gt;
             </p>
             <p>Script</p>
             <!-- prettier-ignore -->
@@ -229,13 +232,16 @@
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tooltipRefs.push({<br>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;refName: refName,<br>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ref: refItem as HTMLElement,<br>
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;text: 'Tooltip Direction: ' + direction,<br>
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;direction: direction as PopupDirection,<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;text: 'Tooltip Direction: ' +
+              direction,<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;direction: direction as
+              PopupDirection,<br>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;});<br>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;});<br>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (tooltipRefs.length === directions.length) {<br>
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.PopupManager.registerToolTips('ToolTip', tooltipRefs);<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.PopupManager.registerToolTips('ToolTip',
+              tooltipRefs);<br>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;} else {<br>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;index++;<br>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (index &lt; 5) {<br>
@@ -289,27 +295,41 @@
             <h3>Code</h3>
             <!-- prettier-ignore -->
             <p class="codeBlock">
-              &lt;<span class="tag">div</span> <span class="attr">class</span>=<span class="string">"example"</span>&gt;<br>
-              &nbsp;&nbsp;&lt;<span class="tag">button</span> <span class="attr">v-on:click</span>=<span class="string">"this.PopupManager.showPopup('windowPopupExample');"</span>&gt;<br>
+              &lt;<span class="tag">div</span> <span class="attr">class</span>=<span
+                class="string">"example"</span>&gt;<br>
+              &nbsp;&nbsp;&lt;<span class="tag">button</span> <span class="attr">v-on:click</span>=<span
+                class="string">"this.PopupManager.showPopup('windowPopupExample');"</span>&gt;<br>
               &nbsp;&nbsp;&nbsp;&nbsp;Click to see popup<br>
               &nbsp;&nbsp;&lt;/<span class="tag">button</span>&gt;<br>
               &lt;/<span class="tag">div</span>&gt;<br>
               <br>
-              &lt;<span class="tag">PopUp</span> <span class="attr">mode</span>=<span class="string">"windowPopup"</span> <span class="attr">id</span>=<span class="string">"windowPopupExample"</span>&gt;<br>
-              &nbsp;&nbsp;&lt;<span class="tag">div</span> <span class="attr">class</span>=<span class="string">"gwp-mediumModal"</span>&gt;<br>
-              &nbsp;&nbsp;&nbsp;&nbsp;&lt;<span class="tag">div</span> <span class="attr">class</span>=<span class="string">"box"</span>&gt;<br>
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span class="tag">h3</span>&gt;Example of a Modal Popup&lt;/<span class="tag">h3</span>&gt;<br>
+              &lt;<span class="tag">PopUp</span> <span class="attr">mode</span>=<span
+                class="string">"windowPopup"</span> <span class="attr">id</span>=<span
+                class="string">"windowPopupExample"</span>&gt;<br>
+              &nbsp;&nbsp;&lt;<span class="tag">div</span> <span class="attr">class</span>=<span
+                class="string">"gwp-mediumModal"</span>&gt;<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&lt;<span class="tag">div</span> <span class="attr">class</span>=<span
+                class="string">"box"</span>&gt;<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span class="tag">h3</span>&gt;Example of a Modal Popup&lt;/<span
+                class="tag">h3</span>&gt;<br>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span class="tag">p</span>&gt;<br>
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This is a modal window popup. Click outside the window to close it. It<br>
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;can be closed with a button as well. This mode doesn't use a ref to<br>
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;position it. CSS markup positions the popup but the size of the wrapper<br>
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;is calculated by the rendered size of the html. If your popup changes<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This is a modal window popup. Click outside the window to
+              close it. It<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;can be closed with a button as well. This mode doesn't use
+              a ref to<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;position it. CSS markup positions the popup but the size
+              of the wrapper<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;is calculated by the rendered size of the html. If your
+              popup changes<br>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size, you may have to refresh it.<br>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/<span class="tag">p</span>&gt;<br>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span class="tag">p</span>&gt;<br>
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Note that the popup automatically picks up the background color of the<br>
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;container div that wraps the content, which makes it easy to have<br>
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;different versions of the popup without CSS or configuration hell<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Note that the popup automatically picks up the background
+              color of the<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;container div that wraps the content, which makes it easy
+              to have<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;different versions of the popup without CSS or
+              configuration hell<br>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hassles.<br>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/<span class="tag">p</span>&gt;<br>
               &nbsp;&nbsp;&nbsp;&nbsp;&lt;/<span class="tag">div</span>&gt;<br>
@@ -355,8 +375,9 @@
           <p class="codeBlock">
             &lt;<span class="tag">PopUp</span><br />
             &nbsp;&nbsp;<span class="attr">mode</span>=<span class="string">"tooltip"</span><br />
-            &nbsp;&nbsp;<span class="attr">:props</span>=<span class="string" >"{positioner: 'tipRef', direction: 'e'}"</span ><br />
-            &nbsp;&nbsp;<span class="attr">id</span>=<span class="string">"myTooltip"</span >&gt;<br />
+            &nbsp;&nbsp;<span class="attr">:props</span>=<span class="string">"{positioner: 'tipRef', direction:
+              'e'}"</span><br />
+            &nbsp;&nbsp;<span class="attr">id</span>=<span class="string">"myTooltip"</span>&gt;<br />
             &nbsp;&nbsp;&lt;<span class="tag">div</span>&gt;Tooltip content&lt;/<span class="tag">div</span>&gt;<br />
             &lt;/<span class="tag">PopUp</span>&gt;
           </p>
@@ -644,6 +665,7 @@ h3 {
   width: 1.7 * $sizeFontBase;
   height: 1.7 * $sizeFontBase;
   display: inline-block;
+
   .fillRed {
     fill: #8b1717;
   }
@@ -718,6 +740,7 @@ main {
         margin-top: 0;
         padding-top: $sizeD;
       }
+
       & + .box > h3 {
         margin-top: 0;
       }
@@ -796,6 +819,7 @@ footer {
 
   h2 {
     color: $colorDark;
+
     > span {
       display: inline-block;
       margin-left: 10px;
@@ -806,6 +830,7 @@ footer {
     color: $colorDark;
     font-size: 1.3 * $sizeFontBase;
     margin-bottom: $sizeA;
+
     span {
       position: relative;
       top: -$sizeC;
@@ -818,6 +843,7 @@ footer {
     background-color: #f2f2f2;
     padding: 10px;
     border-radius: 5px;
+
     & + h3 {
       padding-top: 2 * $sizeB;
     }
@@ -826,8 +852,10 @@ footer {
   > div {
     margin-left: 4.15 * $sizeD;
     margin-bottom: $sizeE;
+
     p {
       margin-top: $sizeC;
+
       &:first-child {
         margin-top: 0;
         line-height: 1.45 * $sizeFontBase;
@@ -838,9 +866,11 @@ footer {
 
 ul {
   margin-left: 4.15 * $sizeD;
+
   li {
     line-height: 1.45 * $sizeFontBase;
     margin-top: $sizeC;
+
     &:first-child {
       margin-top: 0;
     }
@@ -854,6 +884,7 @@ ul {
 .separatedButtons {
   display: flex;
   flex-direction: row;
+
   > button {
     margin: 0 20px;
     display: block;
@@ -893,9 +924,11 @@ pre {
   .tag {
     color: #569cd6;
   }
+
   .attr {
     color: #9cdcfe;
   }
+
   .string {
     color: #ce9178;
   }

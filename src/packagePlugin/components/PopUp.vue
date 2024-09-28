@@ -5,7 +5,7 @@
       :class="config.class"
       v-if="config.isPositioned || data.isDisplayed"
     >
-      <div class="popupContainer">
+      <div class="popupContainer" :id="data.popupId">
         <div class="popupElements" :style="styles.element">
           <template v-if="data.svgParams !== null">
             <template
